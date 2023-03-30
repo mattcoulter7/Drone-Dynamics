@@ -1,0 +1,26 @@
+# flask app
+venv/
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+logs/
+instance/*.profile
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+pyproject.toml
+.flake8
+.env
+
+# projects metadata
+.idea

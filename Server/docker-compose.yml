@@ -1,0 +1,45 @@
+version: '3'
+services:
+  fpv-drone-sim-server:
+    image: socketrunner:latest
+    container_name: fpv-drone-sim-server
+    build:
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+    ports:
+      - "2255:2255"
+      - "2256:2256"
+      - "2257:2257"
+    networks:
+      - fpv-drone-sim
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:2257", "server.py"]
+
+  fpv-drone-sim-client:
+    image: socketrunner:latest
+    container_name: fpv-drone-sim-client
+    build:
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+    ports:
+      - "2258:2258"
+    networks:
+      - fpv-drone-sim
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:2258", "--wait-for-client", "client.py"]
+    
+networks:
+  fpv-drone-sim:
+    driver: bridge
