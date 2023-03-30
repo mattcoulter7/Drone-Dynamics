@@ -1,27 +1,29 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SocketRunner
 {
     public abstract class Client
     {
-        protected Action<JObject, Client> _handler;
+        protected string ipAddress { get; private set; }
+        protected int port { get; private set; }
+        public Protocol protocol { get; private set; }
 
-        public Client(Action<JObject, Client> handler)
+        protected Action<JObject, Client> handler { get; private set; }
+
+        public Client(string ipAddress, int port, Action<JObject, Client> handler, Protocol protocol)
         {
-            _handler = handler;
-        }
-        public void Start()
-        {
+            this.ipAddress = ipAddress;
+            this.port = port;
+            this.handler = handler;
+            this.protocol = protocol;
+
             // Start a background task to listen for incoming messages
             Task.Factory.StartNew(() => ListenForMessages());
         }
         public abstract void SendMessage(string messageType, JObject messageBody);
+        public abstract void Connect();
         public abstract void Disconnect();
         protected abstract void ListenForMessages();
     }

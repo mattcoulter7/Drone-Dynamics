@@ -40,7 +40,7 @@ public class Multiplayer : MonoBehaviour
         foreach (var obj in multiplayerObjects)
         {
             localObjects[obj._id] = obj.gameObject;
-            connection.Send("data", obj.AsJson());
+            connection.Send("data", obj.AsJson(), Protocol.UDP);
         }
     }
 

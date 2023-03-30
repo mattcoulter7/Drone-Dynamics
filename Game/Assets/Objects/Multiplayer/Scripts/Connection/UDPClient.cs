@@ -16,7 +16,11 @@ namespace SocketRunner
         private UdpClient _client;
         private IPEndPoint _remoteEndpoint;
 
-        public UDPClient(string ipAddress, int port, Action<JObject, Client> handler) : base(handler)
+        public UDPClient(string ipAddress, int port, Action<JObject, Client> handler) : base(ipAddress, port, handler, Protocol.UDP)
+        {
+        }
+
+        public override void Connect()
         {
             _client = new UdpClient();
             _remoteEndpoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
@@ -36,12 +40,12 @@ namespace SocketRunner
         {
             while (true)
             {
-                if (_client.Available > 0)
+                if (_client != null && _client.Available > 0)
                 {
                     byte[] buffer = _client.Receive(ref _remoteEndpoint);
                     string messageStr = Encoding.ASCII.GetString(buffer);
                     JObject message = JObject.Parse(messageStr);
-                    _handler.Invoke(message, this);
+                    handler.Invoke(message, this);
                 }
                 else
                 {

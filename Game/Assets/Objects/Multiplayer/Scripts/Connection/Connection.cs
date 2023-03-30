@@ -4,29 +4,29 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 using SocketRunner;
 using System;
+using UnityEditor.PackageManager;
+using System.Threading.Tasks;
+using System.Net.Sockets;
 
 public class Connection : MonoBehaviour
 {
-    public string host;
-    public int port;
-    [field: SerializeField] public long ping { get; private set; } = -1;
-    private TCPClient tcpClient = null;
-    private UDPClient udpClient = null;
+    public string tcpHost;
+    public int tcpPort;
+    public string udpHost;
+    public int udpPort;
+    public long ping { get; private set; } = -1;
 
-    private Dictionary<string, Action<JObject, SocketRunner.Client>> _handlers = new Dictionary<string, Action<JObject, SocketRunner.Client>>();
+    private Dictionary<Protocol, SocketRunner.Client> clients = new Dictionary<Protocol, SocketRunner.Client>();
+    private Dictionary<string, Action<JObject, SocketRunner.Client>> handlers = new Dictionary<string, Action<JObject, SocketRunner.Client>>();
 
     // Start is called before the first frame update
     private void Start()
     {
-        tcpClient = new TCPClient(host, port, OnMessage);
-        udpClient = new UDPClient(host, port + 1, OnMessage);
-
-        tcpClient.Start();
-        udpClient.Start();
+        RegisterClient(new TCPClient(tcpHost, tcpPort, OnMessage));
+        RegisterClient(new UDPClient(udpHost, udpPort, OnMessage));
 
         On("pong", (data, sender) =>
         {
-            Debug.Log("Receieving Ping");
             long send_time = data.Value<long>("time");
             long receive_time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             ping = (receive_time - send_time);
@@ -35,19 +35,44 @@ public class Connection : MonoBehaviour
         StartCoroutine(PingCoroutine());
     }
 
-    public void Send(string type, JObject data)
+    private void RegisterClient(SocketRunner.Client client)
     {
-        udpClient.SendMessage(type, data);
+        Task.Factory.StartNew(() =>
+        {
+            try
+            {
+                client.Connect();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Unable to connect to server");
+            }
+        });
+        clients[client.protocol] = client;
+    }
+
+    private SocketRunner.Client GetClient(Protocol protocol)
+    {
+        clients.TryGetValue(protocol, out var client);
+        return client;
+    }
+
+    public void Send(string type, JObject data, Protocol protocol)
+    {
+        var client = GetClient(protocol);
+        if (client == null) return;
+
+        client.SendMessage(type, data);
     }
 
     private void OnMessage(JObject data, SocketRunner.Client sender)
     {
         string messageType = data.Value<string>("event");
-        if (_handlers.ContainsKey(messageType))
+        if (handlers.ContainsKey(messageType))
         {
             UnityMainThreadDispatcher.Instance().Enqueue(() =>
             {
-                _handlers[messageType](data, sender);
+                handlers[messageType](data, sender);
             });
         }
     }
@@ -58,22 +83,23 @@ public class Connection : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
 
-            Debug.Log("Sending Ping");
             JObject data = new JObject();
             data["time"] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            Send("ping", data);
+
+            Send("ping", data, Protocol.TCP);
+            Send("ping", data, Protocol.UDP);
         }
     }
 
     public void On(string messageType, Action<JObject, SocketRunner.Client> handler)
     {
-        if (!_handlers.ContainsKey(messageType))
+        if (!handlers.ContainsKey(messageType))
         {
-            _handlers[messageType] = handler;
+            handlers[messageType] = handler;
         }
         else
         {
-            _handlers[messageType] += handler;
+            handlers[messageType] += handler;
         }
     }
 }

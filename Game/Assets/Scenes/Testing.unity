@@ -3657,6 +3657,22 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 2914389858694965181, guid: df48667700fbb534fbacbd1c40083e84, type: 3}
+      propertyPath: tcpHost
+      value: 192.53.173.104
+      objectReference: {fileID: 0}
+    - target: {fileID: 2914389858694965181, guid: df48667700fbb534fbacbd1c40083e84, type: 3}
+      propertyPath: tcpPort
+      value: 8000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2914389858694965181, guid: df48667700fbb534fbacbd1c40083e84, type: 3}
+      propertyPath: udpHost
+      value: 192.53.173.104
+      objectReference: {fileID: 0}
+    - target: {fileID: 2914389858694965181, guid: df48667700fbb534fbacbd1c40083e84, type: 3}
+      propertyPath: udpPort
+      value: 8001
+      objectReference: {fileID: 0}
     - target: {fileID: 2914389859657357072, guid: df48667700fbb534fbacbd1c40083e84, type: 3}
       propertyPath: obj
       value: 

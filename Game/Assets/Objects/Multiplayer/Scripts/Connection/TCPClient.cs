@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-
 using UnityEngine;
 
 
@@ -17,7 +17,11 @@ namespace SocketRunner
         private TcpClient _client;
         private NetworkStream _stream;
 
-        public TCPClient(string ipAddress, int port, Action<JObject, Client> handler) : base(handler)
+        public TCPClient(string ipAddress, int port, Action<JObject, Client> handler) : base(ipAddress, port, handler, Protocol.TCP)
+        {
+        }
+
+        public override void Connect()
         {
             _client = new TcpClient(ipAddress, port);
             _stream = _client.GetStream();
@@ -35,15 +39,23 @@ namespace SocketRunner
 
         protected override void ListenForMessages()
         {
-            byte[] buffer = new byte[1024];
             while (true)
             {
-                int bytesRead = _stream.Read(buffer, 0, buffer.Length);
-                if (bytesRead > 0)
+                if (_client != null && _client.Available > 0)
                 {
-                    string messageStr = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    JObject message = JObject.Parse(messageStr);
-                    _handler.Invoke(message, this);
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = _stream.Read(buffer, 0, buffer.Length);
+                    if (bytesRead > 0)
+                    {
+                        string messageStr = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                        JObject message = JObject.Parse(messageStr);
+                        handler.Invoke(message, this);
+                    }
+                }
+                else
+                {
+                    // Sleep for a short time to avoid using too much CPU
+                    Thread.Sleep(10);
                 }
             }
         }
