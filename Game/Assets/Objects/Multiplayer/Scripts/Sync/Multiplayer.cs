@@ -3,22 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SocketRunner;
+using System;
+using Unity.VisualScripting;
+using System.Linq;
 
-public class Multiplayer : MonoBehaviour
+public class Multiplayer : MonoBehaviour, ISyncer
 {
     [SerializeField] private GameObject multiplayerPrefab;
-    private Connection connection = null;
-    private MultiplayerObject[] multiplayerObjects;
 
-    private Dictionary<string, GameObject> globalObjects = new Dictionary<string, GameObject>();
-    private Dictionary<string, GameObject> localObjects = new Dictionary<string, GameObject>();
+    private Connection connection = null;
+
+    private Dictionary<string, ISyncIn> inRegistry { get; set; } = new Dictionary<string, ISyncIn>();
+    private Dictionary<string, ISyncOut> outRegistry { get; set; } = new Dictionary<string, ISyncOut>();
+    private Dictionary<string, long> syncTimes { get; set; } = new Dictionary<string, long>();
+    private Dictionary<string, GameObject> objectRegistry { get; set; } = new Dictionary<string, GameObject>();
+
     private void Start()
     {
         connection = FindObjectOfType<Connection>();
-        multiplayerObjects = FindObjectsOfType<MultiplayerObject>();
         if (connection != null)
         {
-            connection.On("data", SyncGlobal);
+            connection.On("data", SyncIn);
 
             // Start a background task to listen for incoming messages
             StartCoroutine(SyncCoroutine());
@@ -29,51 +34,88 @@ public class Multiplayer : MonoBehaviour
         yield return new WaitForSeconds(1f);
         while (true)
         {
-            SyncLocal();
+            SyncOut();
             yield return new WaitForEndOfFrame();
         }
     }
-    void SyncLocal()
+    public void RegisterIn(ISyncIn obj)
+    {
+        inRegistry[obj._id] = obj;
+    }
+    public void DeregisterIn(string _id)
+    {
+        inRegistry.Remove(_id);
+    }
+    public void RegisterOut(ISyncOut obj)
+    {
+        outRegistry[obj._id] = obj;
+    }
+    public void DeregisterOut(string _id)
+    {
+        outRegistry.Remove(_id);
+    }
+    private void SyncOut()
     {
         if (connection == null) return;
 
-        foreach (var obj in multiplayerObjects)
+        foreach (var pair in outRegistry)
         {
-            localObjects[obj._id] = obj.gameObject;
-            connection.Send("data", obj.AsJson(), Protocol.UDP);
+            JObject packet = new JObject();
+            pair.Value.SyncOut(ref packet, this);
+            connection.Send("data", packet, Protocol.UDP);
         }
     }
-
-    void SyncGlobal(JObject data, Client sender)
+    private void SyncIn(JObject data, Client sender)
     {
         string _id = data.Value<string>("_id");
-        if (localObjects.ContainsKey(_id)) return;
+        // if (outRegistry.ContainsKey(_id)) return; // Don't sync itself
 
-        GameObject obj = null;
-        globalObjects.TryGetValue(_id, out obj);
-        if (obj == null) {
-            // create the new object
-            string tag = data.Value<string>("tag"); // TODO: create by tag linked to prefab
+        long _time = data.Value<long>("_time");
+        syncTimes.TryGetValue(_id, out long _last_synced_time);
+        if (_time < _last_synced_time)
+        {
+            // Already have more up to date data, don't proceed
+            return;
+        }
+        syncTimes[_id] = _time;
 
-            obj = Instantiate(multiplayerPrefab);
-            globalObjects[_id] = obj;
+        string object_id = data.Value<string>("object_id");
+
+        // Handle Creating the game object
+        GameObject instance = null;
+        objectRegistry.TryGetValue(object_id, out instance);
+        if (instance == null)
+        {
+            string object_type = data.Value<string>("object_type");
+            instance = Instantiate(multiplayerPrefab);
+            objectRegistry[object_id] = instance;
         }
 
-        if (obj == null) return;
+        ISyncIn obj = null;
+        inRegistry.TryGetValue(_id, out obj);
 
-        GlobalMultiplayerObject gmo = obj.GetComponent<GlobalMultiplayerObject>();
+        if (obj == null)
+        {
+            string _type = data.Value<string>("_type");
 
-        gmo.targetPosition = new Vector3(
-            (float)data["transform"]["position"][0],
-            (float)data["transform"]["position"][1],
-            (float)data["transform"]["position"][2]
-        );
+            Type type = Type.GetType(_type);
+            if (type == null)
+            {
+                Debug.LogWarning($"Multiplayer Synced Type {_type} is not a real type.");
+                return;
+            }
 
-        gmo.targetEulerAngles = new Vector3(
-            (float)data["transform"]["eulerAngles"][0],
-            (float)data["transform"]["eulerAngles"][1],
-            (float)data["transform"]["eulerAngles"][2]
-        );
-        gmo.playerName = (string)data["playerName"];
+            int _index = data.Value<int>("_index");
+            obj = (ISyncIn)instance.GetComponentsInChildren(type)[_index];
+            if (obj == null)
+            {
+                Debug.LogWarning($"Multiplayer Prefab Variant {multiplayerPrefab.name} does not have a {_type}.");
+                return;
+            }
+
+            obj.Spawn(data, this);
+        }
+
+        obj.SyncIn(data, this);
     }
 }

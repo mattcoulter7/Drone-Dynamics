@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class UniqueID : MonoBehaviour
 {
     public string _id { get; private set; }
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _id = System.Guid.NewGuid().ToString();
+        _id = Guid.NewGuid().ToString();
     }
 }

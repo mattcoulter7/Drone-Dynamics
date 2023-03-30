@@ -43,7 +43,7 @@ public class Connection : MonoBehaviour
             {
                 client.Connect();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Debug.Log("Unable to connect to server");
             }

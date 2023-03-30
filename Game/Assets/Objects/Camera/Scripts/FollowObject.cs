@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -99,7 +100,7 @@ public class FollowObject : MonoBehaviour
         // Register callbacks for when the action is started (Down) and released (Up)
         spectate.started += (cc) =>
         {
-            GlobalMultiplayerObject gmo = FindObjectOfType<GlobalMultiplayerObject>();
+            SyncComponent gmo = FindObjectsOfType<SyncComponent>().First(sc => !sc.local);
             if (gmo == null) return;
 
             target = gmo.transform;

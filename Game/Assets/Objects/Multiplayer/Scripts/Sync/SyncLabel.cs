@@ -1,23 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-public class GlobalMultiplayerObject : MonoBehaviour
+public class SyncLabel : SyncComponent
 {
-    public string playerName = "";
-
+    public string playerName = "Some Random";
     public GameObject playerLabelPrefab;
+
     private RectTransform labelsParent;
     private GameObject playerLabelInstance;
     private PlayerLabel playerLabelComponentInstance;
 
-    public Vector3 targetPosition = new Vector3();
-    public Vector3 targetEulerAngles = new Vector3();
-
-    public float interpolation = 0.2f;
-
-    private void Start()
+    public override void Spawn(JObject data, ISyncer syncer)
     {
+        base.Spawn(data, syncer);
+        // Called when the object is first loaded in
         labelsParent = GameObject.FindGameObjectWithTag("PlayerLabels").transform as RectTransform;
         if (labelsParent != null && playerLabelPrefab != null)
         {
@@ -29,22 +25,21 @@ public class GlobalMultiplayerObject : MonoBehaviour
             playerLabelComponentInstance.SetName(playerName);
         }
     }
+    public override void SyncIn(JObject data, ISyncer syncer)
+    {
+        playerName = data.Value<string>("playerName");
+        if (playerLabelComponentInstance != null)
+            playerLabelComponentInstance.SetName(playerName);
+    }
+    public override void SyncOut(ref JObject data, ISyncer syncer)
+    {
+        base.SyncOut(ref data, syncer);
+        data["playerName"] = playerName;
+    }
 
     private void OnDestroy()
     {
         if (playerLabelInstance != null)
-        {
             Destroy(playerLabelInstance);
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (playerLabelComponentInstance != null)
-            playerLabelComponentInstance.SetName(playerName);
-
-        transform.position = Vector3.Lerp(transform.position, targetPosition, interpolation);
-        transform.eulerAngles = targetEulerAngles;
     }
 }
