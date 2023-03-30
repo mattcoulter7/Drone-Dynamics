@@ -4,9 +4,7 @@ using UnityEngine;
 using Newtonsoft.Json.Linq;
 using SocketRunner;
 using System;
-using UnityEditor.PackageManager;
 using System.Threading.Tasks;
-using System.Net.Sockets;
 
 public class Connection : MonoBehaviour
 {

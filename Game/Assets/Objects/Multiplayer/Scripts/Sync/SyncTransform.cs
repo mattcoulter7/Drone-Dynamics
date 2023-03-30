@@ -9,7 +9,7 @@ public class SyncTransform : SyncComponent
 {
     public Vector3 targetPosition = new Vector3();
     public Vector3 targetEulerAngles = new Vector3();
-    public float interpolation = 0.2f;
+    public float interpolation = 0.6f;
 
     public override void SyncIn(JObject data, ISyncer syncer)
     {
@@ -17,7 +17,7 @@ public class SyncTransform : SyncComponent
             (float)data["transform"]["position"][0],
             (float)data["transform"]["position"][1],
             (float)data["transform"]["position"][2]
-        ) + transform.forward * 3;
+        );
         targetEulerAngles = new Vector3(
             (float)data["transform"]["eulerAngles"][0],
             (float)data["transform"]["eulerAngles"][1],

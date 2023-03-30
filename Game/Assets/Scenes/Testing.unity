@@ -3778,14 +3778,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 552012286}
     m_Modifications:
-    - target: {fileID: 7356233049188295627, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
-      propertyPath: rollOffset
-      value: 1200
-      objectReference: {fileID: 0}
-    - target: {fileID: 7356233049188295627, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
-      propertyPath: pitchOffset
-      value: 1200
-      objectReference: {fileID: 0}
     - target: {fileID: 7356233049188295633, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
       propertyPath: m_Name
       value: drone

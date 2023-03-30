@@ -188,11 +188,11 @@ MonoBehaviour:
   thottle: 0
   maxRPM: 12000
   pitch: 0
-  pitchOffset: 100
+  pitchOffset: 1200
   yaw: 0
   yawOffset: 100
   roll: 0
-  rollOffset: 100
+  rollOffset: 1200
 --- !u!54 &7356233049188295637
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetPosition: {x: 0, y: 0, z: 0}
   targetEulerAngles: {x: 0, y: 0, z: 0}
-  interpolation: 0.2
+  interpolation: 0.6
 --- !u!114 &124638364231303030
 MonoBehaviour:
   m_ObjectHideFlags: 0

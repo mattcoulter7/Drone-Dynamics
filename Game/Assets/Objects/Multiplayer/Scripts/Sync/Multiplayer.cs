@@ -68,20 +68,20 @@ public class Multiplayer : MonoBehaviour, ISyncer
     private void SyncIn(JObject data, Client sender)
     {
         string _id = data.Value<string>("_id");
-        // if (outRegistry.ContainsKey(_id)) return; // Don't sync itself
+        if (outRegistry.ContainsKey(_id)) return; // Don't sync itself
 
+
+        // Check to see if we have already synced more recent data
         long _time = data.Value<long>("_time");
         syncTimes.TryGetValue(_id, out long _last_synced_time);
         if (_time < _last_synced_time)
         {
-            // Already have more up to date data, don't proceed
             return;
         }
         syncTimes[_id] = _time;
 
-        string object_id = data.Value<string>("object_id");
-
         // Handle Creating the game object
+        string object_id = data.Value<string>("object_id");
         GameObject instance = null;
         objectRegistry.TryGetValue(object_id, out instance);
         if (instance == null)
