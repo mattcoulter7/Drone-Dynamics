@@ -62,11 +62,15 @@ public class Multiplayer : MonoBehaviour, ISyncer
         {
             JObject packet = new JObject();
             pair.Value.SyncOut(ref packet, this);
+            packet["_version"] = Application.version; ;
             connection.Send("data", packet, Protocol.UDP);
         }
     }
     private void SyncIn(JObject data, Client sender)
     {
+        string _version = data.Value<string>("_version");
+        if (_version != Application.version) return;
+
         string _id = data.Value<string>("_id");
         if (outRegistry.ContainsKey(_id)) return; // Don't sync itself
 

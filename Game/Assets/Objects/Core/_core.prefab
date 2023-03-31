@@ -282,9 +282,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fd33d1c770a05746813142673884094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: 192.53.173.104
-  port: 8000
-  <ping>k__BackingField: -1
+  tcpHost: 
+  tcpPort: 0
+  udpHost: 
+  udpPort: 0
 --- !u!114 &2914389858694965171
 MonoBehaviour:
   m_ObjectHideFlags: 0
