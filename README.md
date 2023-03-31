@@ -1,7 +1,10 @@
-
 # Drone Dynamics
-
 Welcome to Drone Dynamics, a multiplayer drone simulator. In this game, you can build and spec your own drones and compete against other real players in a Battle Royale tournament inspired by Fall Guys, or practice flying in a playground.
+
+The game just had it's first [alpha release](../../releases), which includes a very basic version of Playground Mode (so most features listed below are future ideas). Feel free to give it a try! Its currently hooked up to a multiplayer server in Singapore, so you will be able to see other who are currently flying around too!
+
+## Controls
+![enter image description here](./controls.png)
 
 ## Gameplay
 There are 2 main modes: **Playground** and **Battle Royale**. Each modes can be played from as a part of up to 4 people.
