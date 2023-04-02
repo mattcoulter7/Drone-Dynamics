@@ -41,10 +41,10 @@ public class MinMaxValue
 
 
 [RequireComponent(typeof(Camera))]
-public class FollowObject : MonoBehaviour
+public class FollowObject : MonoBehaviour, ICameraFollow
 {
-    [Header("Target")]
-    public Transform target;
+    [field: SerializeField] public Transform target { get; set; }
+    private Transform originalTarget;
 
     [Header("Height")]
     public float height = 2.0f;
@@ -78,7 +78,6 @@ public class FollowObject : MonoBehaviour
     public float instabilitySmoothing = 0.05f;
 
     private Camera cam;
-    private Transform originalTarget;
 
     private void Awake()
     {
@@ -88,27 +87,6 @@ public class FollowObject : MonoBehaviour
         distanceScalar.rb = target.GetComponent<Rigidbody>();
         fovScalar.rb = target.GetComponent<Rigidbody>();
         instabilityScalar.rb = target.GetComponent<Rigidbody>();
-    }
-
-    private void OnEnable()
-    {
-        PlayerInput playerInput = FindObjectOfType<PlayerInput>();
-        if (playerInput == null) return;
-
-        InputAction spectate = playerInput.actions["spectate"];
-
-        // Register callbacks for when the action is started (Down) and released (Up)
-        spectate.started += (cc) =>
-        {
-            SyncComponent gmo = FindObjectsOfType<SyncComponent>().First(sc => !sc.local);
-            if (gmo == null) return;
-
-            target = gmo.transform;
-        };
-        spectate.canceled += (cc) =>
-        {
-            target = originalTarget;
-        };
     }
 
     private void Update()
@@ -153,5 +131,9 @@ public class FollowObject : MonoBehaviour
         Vector3 aheadVector = new Vector3(target.forward.x, 0, target.forward.z);
 
         transform.LookAt(target.position + aheadVector * lookAhead + instability);
+    }
+    public void ReturnToOriginalTarget()
+    {
+        target = originalTarget;
     }
 }

@@ -13,6 +13,6 @@ public class PingValue : MonoBehaviour
         Connection conn = FindObjectOfType<Connection>();
         if (!conn) return;
 
-        text.text = $"{conn.ping}ms";
+        text.text = $"{conn.udpPing}ms";
     }
 }

@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: drone (multiplayer)
       objectReference: {fileID: 0}
+    - target: {fileID: 7356233049188295633, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: m_TagString
+      value: Multiplayer
+      objectReference: {fileID: 0}
     - target: {fileID: 7356233049188295636, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
       propertyPath: m_Enabled
       value: 1
