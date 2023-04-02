@@ -29,6 +29,8 @@ namespace SocketRunner
 
         public override void SendMessage(string messageType, JObject messageBody)
         {
+            if (_stream == null) return;
+
             JObject message = new JObject();
             message["event"] = messageType;
             message.Merge(messageBody);

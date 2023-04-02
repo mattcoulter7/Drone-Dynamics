@@ -10,9 +10,10 @@ public class Connection : MonoBehaviour
 {
     public string tcpHost;
     public int tcpPort;
+    public long tcpPing { get; private set; } = -1;
     public string udpHost;
     public int udpPort;
-    public long ping { get; private set; } = -1;
+    public long udpPing { get; private set; } = -1;
 
     private Dictionary<Protocol, SocketRunner.Client> clients = new Dictionary<Protocol, SocketRunner.Client>();
     private Dictionary<string, Action<JObject, SocketRunner.Client>> handlers = new Dictionary<string, Action<JObject, SocketRunner.Client>>();
@@ -27,7 +28,10 @@ public class Connection : MonoBehaviour
         {
             long send_time = data.Value<long>("time");
             long receive_time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            ping = (receive_time - send_time);
+            if (sender.protocol == Protocol.UDP)
+                udpPing = (receive_time - send_time);
+            else if (sender.protocol == Protocol.TCP)
+                tcpPing = (receive_time - send_time);
         });
 
         StartCoroutine(PingCoroutine());
@@ -84,8 +88,23 @@ public class Connection : MonoBehaviour
             JObject data = new JObject();
             data["time"] = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-            Send("ping", data, Protocol.TCP);
-            Send("ping", data, Protocol.UDP);
+            try
+            {
+                Send("ping", data, Protocol.TCP);
+            } 
+            catch (Exception)
+            {
+                Debug.LogWarning("Unable to communicate with TCP server");
+            }
+
+            try
+            {
+                Send("ping", data, Protocol.UDP);
+            }
+            catch (Exception)
+            {
+                Debug.LogWarning("Unable to communicate with UDP server");
+            }
         }
     }
 
