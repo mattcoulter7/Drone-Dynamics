@@ -22,9 +22,8 @@ public class PlayerLabel : MonoBehaviour
 
     void LateUpdate()
     {
-        Vector3 objectPosition = canvas.worldCamera.WorldToViewportPoint(objectToFollow.position + offset);
-        rectTransform.anchorMax = objectPosition;
-        rectTransform.anchorMin = objectPosition;
+        rectTransform.position = objectToFollow.position + offset;
+        rectTransform.LookAt(canvas.worldCamera.transform.position);
     }
 
     public void SetName(string name)
