@@ -7059,7 +7059,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1510639809}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8e5f99edebf76446b384b676baae2f2, type: 3}
   m_Name: 
@@ -7071,7 +7071,6 @@ MonoBehaviour:
   grainTime: 200
   envelopeTime: 10
   clipMargin: 0.4
-  maxPitch: 8
 --- !u!1 &1530309667
 GameObject:
   m_ObjectHideFlags: 0
