@@ -10,27 +10,27 @@ public class Motor : MonoBehaviour
     [field: SerializeField] public float rpm { get; private set; } = 0f;
     
 
-    [field: SerializeField] private float maxRpm = 10000f;
-    [field: SerializeField] private float motorResponsiveness = 0.4f;
+    [field: SerializeField] public float maxRpm { get; private set; } = 10000f;
+    [field: SerializeField] public float motorResponsiveness { get; private set; } = 0.4f;
 
     [field: Header("Force Multiplier")]
-    [field: SerializeField] private float thrustMultiplier = 1f;
-    [field: SerializeField] private float torqueMultiplier = 1f;
+    [field: SerializeField] public float thrustMultiplier { get; private set; } = 1f;
+    [field: SerializeField] public float torqueMultiplier { get; private set; } = 1f;
 
     [field: Header("Configuration")]
-    public float pitchMultiplier  = 0f;
-    public float yawMultiplier = 0f;
-    public float rollMultiplier = 0f;
+    [field: SerializeField] public float pitchMultiplier { get; private set; } = 0f;
+    [field: SerializeField] public float yawMultiplier { get; private set; } = 0f;
+    [field: SerializeField] public float rollMultiplier { get; private set; } = 0f;
 
     [field: Header("Propeller")]
-    [field: SerializeField] private Transform propeller;
-    [field: SerializeField] private float propellerDiameter = 0.3f;
-    [field: SerializeField] private float propellerPitch = 1.0f;
+    [field: SerializeField] public Transform propeller { get; private set; }
+    [field: SerializeField] public float propellerDiameter { get; private set; } = 0.3f;
+    [field: SerializeField] public float propellerPitch { get; private set; } = 1.0f;
+    public float propellerArea { get; private set; }
+    public float propellerCoefficient { get; private set; }
+    public float airDensity { get; private set; } = 1.2f; // Standard air density at sea level
 
     private Rigidbody droneRigidbody;
-    private float propellerArea;
-    private float propellerCoefficient;
-    private float airDensity = 1.2f; // Standard air density at sea level
 
     public void SetRPM(float rpm)
     {

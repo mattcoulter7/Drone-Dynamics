@@ -7047,6 +7047,31 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7223281900606853407, guid: 5a86fab35e36a154c8c5d2f76103b191, type: 3}
   m_PrefabInstance: {fileID: 1493114340}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1510639809 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4609583065795095493, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+  m_PrefabInstance: {fileID: 7356233050237693243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1510639816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510639809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8e5f99edebf76446b384b676baae2f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: b2d12cd2667a72649bb1a71012e771b6, type: 3}
+  rev: 0.5
+  variance: 0.5
+  grainTime: 200
+  envelopeTime: 10
+  clipMargin: 0.4
+  maxPitch: 8
 --- !u!1 &1530309667
 GameObject:
   m_ObjectHideFlags: 0
@@ -10663,6 +10688,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 552012286}
     m_Modifications:
+    - target: {fileID: 155609919140887124, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919140887124, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919140887124, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919851128281, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919851128281, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919851128281, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609920432739243, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609920432739243, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609920432739243, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7356233049188295633, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
       propertyPath: m_Name
       value: drone
@@ -10710,6 +10771,18 @@ PrefabInstance:
     - target: {fileID: 7356233049188295639, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356233049468676614, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356233049468676614, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356233049468676614, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3257884754047002834, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
