@@ -10663,6 +10663,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 552012286}
     m_Modifications:
+    - target: {fileID: 155609919140887124, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919140887124, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919140887124, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919851128281, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919851128281, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609919851128281, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609920432739243, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609920432739243, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155609920432739243, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7356233049188295633, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
       propertyPath: m_Name
       value: drone
@@ -10710,6 +10746,18 @@ PrefabInstance:
     - target: {fileID: 7356233049188295639, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356233049468676614, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <yawMultiplier>k__BackingField
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356233049468676614, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <rollMultiplier>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356233049468676614, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
+      propertyPath: <pitchMultiplier>k__BackingField
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3257884754047002834, guid: 08de616366141dc4cb5739cfa2de4c85, type: 3}
