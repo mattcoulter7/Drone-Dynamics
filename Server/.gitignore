@@ -21,6 +21,7 @@ instance/*.profile
 pyproject.toml
 .flake8
 .env
+*.bat
 
 # projects metadata
 .idea
