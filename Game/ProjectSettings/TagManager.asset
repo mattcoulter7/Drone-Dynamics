@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerLabels
   - Multiplayer
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
