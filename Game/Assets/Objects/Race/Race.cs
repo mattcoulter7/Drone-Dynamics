@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Race : MonoBehaviour
 {
+    [SerializeField] private bool reverseLap = false;
     [SerializeField] private int numCircuits = 0;
     [SerializeField] private List<Checkpoint> checkpoints = new List<Checkpoint>();
     private void Start()
@@ -11,7 +12,7 @@ public class Race : MonoBehaviour
         
     }
     
-    public CheckpointState GetNextCheckpoint(CheckpointState checkpointState)
+    public CheckpointState GetNextCheckpointState(CheckpointState checkpointState)
     {
         if (checkpoints.Count == 0) return null;
         // first checkpoint assignment
@@ -23,28 +24,45 @@ public class Race : MonoBehaviour
             );
 
         int lastNextCheckpointIndex = checkpoints.IndexOf(checkpointState.nextCheckpoint);
-        int nextCheckpointIndex = lastNextCheckpointIndex + 1;
+        int nextCheckpointIndex = checkpointState.reverse ? lastNextCheckpointIndex - 1 : lastNextCheckpointIndex + 1;
+
+        Checkpoint nextCheckpoint = null;
+        int circuitIndex = checkpointState.circuitIndex;
+        bool reverse = checkpointState.reverse;
 
         // lap completed
-        if (nextCheckpointIndex > checkpoints.Count - 1)
+        if (nextCheckpointIndex > checkpoints.Count - 1 || nextCheckpointIndex < 0)
         {
-            Checkpoint nextCheckpoint = null;
-            if (checkpointState.circuitIndex < numCircuits - 1)
+            if (reverseLap)
+                reverse = !reverse;
+
+            circuitIndex++;
+
+            if (circuitIndex < numCircuits)
             {
-                nextCheckpoint = checkpoints[0];
+                if (reverse)
+                {
+                    nextCheckpointIndex = checkpoints.Count - 2;
+                }
+                else
+                {
+                    nextCheckpointIndex = 0;
+                }
             }
-            return new CheckpointState(
-                nextCheckpoint,
-                checkpointState.nextCheckpoint,
-                checkpointState.circuitIndex + 1
-            );
+            else
+            {
+                nextCheckpointIndex = -1;
+            }
         }
+
+        nextCheckpoint = nextCheckpointIndex == -1 ? null : checkpoints[nextCheckpointIndex];
 
         // checkpoint within lap
         return new CheckpointState(
-            checkpoints[nextCheckpointIndex], 
-            checkpointState.nextCheckpoint, 
-            checkpointState.circuitIndex
+            nextCheckpoint, 
+            checkpointState.nextCheckpoint,
+            circuitIndex,
+            reverse
         );
     }
 

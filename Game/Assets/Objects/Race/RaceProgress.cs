@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 public class RaceProgress : MonoBehaviour
 {
-    [SerializeField] private CheckpointState checkpointState = new CheckpointState(null, null, 0);
+    [SerializeField] private CheckpointState checkpointState = new CheckpointState();
     private Race race;
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class RaceProgress : MonoBehaviour
 
         if (checkpoint != checkpointState.nextCheckpoint) return;
 
-        checkpointState = race.GetNextCheckpoint(checkpointState);
+        checkpointState = race.GetNextCheckpointState(checkpointState);
         checkpointState.OnChanged();
 
         if (checkpointState.nextCheckpoint == null)
